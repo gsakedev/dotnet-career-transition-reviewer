@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Twelve small Node.js to C# exercises for experienced engineers learning .NET. Sessions 1–3: fundamentals, OOP, LINQ and dependency injection.">
+<meta name="color-scheme" content="light">
+<title>Node.js → C# · A field guide for engineers</title>
+<style>
+:root{--paper:#f6f4ed;--surface:#fffef9;--ink:#182c2c;--muted:#556762;--line:#d6ddd3;--green:#176250;--mint:#dbece0;--orange:#b04c31;--code:#182b30;--code-text:#e1ece5;--radius:16px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:110px}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--green);text-underline-offset:3px}button,input,textarea{font:inherit}button,a,summary,input{touch-action:manipulation}button,summary{cursor:pointer}button{border:1px solid var(--line);border-radius:8px;padding:9px 14px;background:var(--surface);color:var(--ink);font-size:.84rem;font-weight:650}button:hover{background:var(--mint)}:focus-visible{outline:3px solid #bb5a35;outline-offset:4px}h1,h2,h3,p{margin-top:0}h1,h2,h3{line-height:1.15;letter-spacing:-.035em}h1{font-size:clamp(2.7rem,6vw,5.5rem);font-weight:750;margin-bottom:24px}h2{font-size:clamp(1.8rem,3vw,2.6rem)}h3{font-size:clamp(1.35rem,2vw,1.8rem);margin-bottom:10px}code{font-family:Consolas,"Cascadia Code",monospace;font-size:.9em}p code,li code,dd code{background:#e8ede4;border-radius:4px;padding:2px 5px}strong{font-weight:700}.wrap{width:min(1260px,calc(100% - 64px));margin:auto}.topbar{position:sticky;top:0;z-index:10;background:rgba(246,244,237,.97);border-bottom:1px solid var(--line)}.bar-inner{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{font-weight:750;letter-spacing:-.03em;text-decoration:none;color:var(--ink);display:flex;gap:10px;align-items:center}.brand-mark{display:grid;place-items:center;background:var(--green);color:white;border-radius:8px;width:36px;height:36px;font:700 15px Consolas,monospace}.bar-label{font:12px Consolas,monospace;letter-spacing:.04em;color:var(--muted)}.hero{padding:70px 0 45px;display:grid;grid-template-columns:1.35fr .65fr;gap:60px;align-items:center}.eyebrow{font:700 12px Consolas,monospace;text-transform:uppercase;letter-spacing:.14em;color:var(--green);margin-bottom:20px}.hero h1 span{color:var(--green)}.intro{font-size:1.12rem;max-width:670px;color:var(--muted)}.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:25px}.tag{font:12px Consolas,monospace;border:1px solid var(--line);border-radius:30px;padding:6px 11px}.hero-aside{background:var(--code);color:var(--code-text);padding:28px;border-radius:var(--radius);transform:rotate(1deg);box-shadow:8px 8px 0 #dce5d7}.hero-aside .eyebrow{color:#b0d5bd}.bridge{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #3b5354;padding-bottom:22px;margin-bottom:23px;font:700 clamp(1.1rem,2.2vw,1.8rem) Consolas,monospace}.bridge span{color:#d7a06e}.routine{margin:0;padding-left:24px}.routine li{padding:3px 0}.routine li::marker{color:#a6cbae}.aside-note{font-size:.8rem;color:#b5c7c1;margin:20px 0 0}.guide-note{display:grid;grid-template-columns:1fr 1fr;gap:25px;border-block:1px solid var(--line);padding:23px 0;margin-bottom:42px;font-size:.9rem;color:var(--muted)}.guide-note p{margin:0}.layout{display:grid;grid-template-columns:215px minmax(0,1fr);gap:44px;align-items:start;padding-bottom:60px}.sidebar{position:sticky;top:102px}.sidebar-title{font:11px Consolas,monospace;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);margin-bottom:12px}.level-link{display:flex;gap:12px;align-items:center;padding:13px 0;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--line);font-size:.9rem}.level-link small{display:block;color:var(--muted);font-size:.76rem}.level-no{font:14px Consolas,monospace;color:var(--green)}.progress-box{margin-top:27px}.progress-box p{font-size:.8rem;margin-bottom:5px}.progress-box progress{width:100%;height:9px;accent-color:var(--green)}.storage-note{font-size:.73rem;color:var(--muted);line-height:1.5;margin:10px 0 16px}.side-actions{display:flex;flex-direction:column;gap:9px}.side-actions button{text-align:left}.level{margin-bottom:65px}.section-intro{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin:0 0 24px}.section-intro h2{margin-bottom:9px}.section-intro p{margin-bottom:0;color:var(--muted);font-size:.93rem}.level-kicker{font:12px Consolas,monospace;letter-spacing:.08em;color:var(--green);margin-bottom:9px}.section-count{white-space:nowrap;font:12px Consolas,monospace;color:var(--muted)}.exercise{padding:27px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin:0 0 23px;overflow:hidden;scroll-margin-top:100px}.card-top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:17px}.card-id{font:12px Consolas,monospace;color:var(--green);letter-spacing:.05em}.duration{font-size:.75rem;color:var(--muted)}.card-description{color:var(--muted);font-size:.94rem;margin-bottom:22px}.pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:13px;margin:18px 0 22px}.code-panel{min-width:0;background:var(--code);border-radius:10px;overflow:hidden;color:var(--code-text)}.code-label{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #3a4e50;padding:8px 14px;font:11px Consolas,monospace;text-transform:uppercase;letter-spacing:.06em;color:#bcd2c5}.code-label .cs{color:#efc6a5}.copy{border:0;background:transparent;color:#ccded1;padding:4px 6px;font:11px Consolas,monospace;text-transform:none;letter-spacing:0;border-radius:4px}.copy:hover{background:#36514c;color:white}pre{margin:0;padding:17px;overflow-x:auto;tab-size:4;font:12.5px/1.7 Consolas,"Cascadia Code",monospace}pre code{font:inherit;background:transparent;color:inherit;white-space:pre}.prompt{background:#eef2e9;border-left:3px solid var(--green);padding:15px 18px;margin-bottom:16px;border-radius:0 8px 8px 0}.prompt .micro{display:block;font:700 10px Consolas,monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--green);margin-bottom:7px}.prompt p{margin:0;font-size:.93rem}.task{font-size:.9rem;margin-bottom:17px}.task strong{color:var(--orange)}.notes-label{display:block;font-size:.79rem;color:var(--muted);margin-bottom:5px}textarea{width:100%;min-height:70px;resize:vertical;border:1px solid var(--line);background:#fffefa;border-radius:8px;padding:10px 12px;font-size:.85rem;color:var(--ink);margin-bottom:13px}textarea::placeholder{color:#6e7b75}details{border-top:1px solid var(--line)}summary{font-size:.87rem;font-weight:650;padding:13px 0;min-height:45px}details[open] summary{color:var(--green)}.reveal{font-size:.9rem;padding:0 0 15px;color:#354944}.reveal p:last-child{margin-bottom:0}.answer-label{font:700 10px Consolas,monospace;text-transform:uppercase;letter-spacing:.06em;color:var(--orange);margin-bottom:7px}.answer-output{font-family:Consolas,monospace;color:var(--ink)}.card-bottom{border-top:1px solid var(--line);padding-top:16px;margin-top:3px;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}.done-label{display:flex;gap:9px;align-items:center;font-size:.82rem;cursor:pointer}.done-label input{accent-color:var(--green);width:18px;height:18px}.project-link{font-size:.75rem;color:var(--muted)}.exercise.is-done{border-color:#a7c6ad}.exercise.is-done .card-id::after{content:' · COMPLETED';font-size:10px}.sources{display:flex;flex-wrap:wrap;gap:7px 17px;font-size:.76rem;margin-top:16px}.setup{margin:0 0 28px;border:1px dashed #aab9ac;border-radius:10px;padding:17px 20px;font-size:.86rem;color:var(--muted)}.setup summary{padding:0;min-height:28px}.setup p{margin:10px 0 0}.closing{background:var(--mint);padding:30px;border-radius:var(--radius)}.closing h2{font-size:1.8rem}.closing p{margin-bottom:0}.footer{border-top:1px solid var(--line);padding:25px 0 35px;color:var(--muted);font-size:.8rem}.footer p{margin:0 0 9px}.footer-grid{display:flex;justify-content:space-between;gap:30px}.skip{position:absolute;left:16px;top:-100px;z-index:30;background:white;padding:10px}.skip:focus{top:10px}.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:white;padding:11px 20px;border-radius:9px;font-size:.85rem;z-index:50;box-shadow:0 6px 25px #0002}.toast:empty{display:none}[hidden]{display:none!important}
+@media(min-width:1500px){pre{font-size:13.5px}}
+@media(max-width:1050px){.wrap{width:calc(100% - 40px)}.layout{grid-template-columns:165px minmax(0,1fr);gap:25px}.exercise{padding:21px}.hero{gap:30px}.pair{grid-template-columns:1fr}.hero-aside{padding:24px}}
+@media(max-width:700px){html{scroll-padding-top:88px}.wrap{width:calc(100% - 32px)}.bar-inner{min-height:64px}.bar-label{font-size:10px}.brand{font-size:.9rem}.brand-mark{width:31px;height:31px}.hero{padding:38px 0 32px;grid-template-columns:1fr;gap:25px}.hero h1{font-size:clamp(2.6rem,11vw,4rem)}.hero-aside{transform:none;box-shadow:5px 5px 0 #dce5d7}.bridge{font-size:1.5rem}.intro{font-size:1rem}.guide-note{grid-template-columns:1fr;gap:12px;margin-bottom:25px}.layout{display:block}.sidebar{position:static;margin-bottom:36px;padding-bottom:22px;border-bottom:1px solid var(--line)}.level-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.level-link{align-items:flex-start;font-size:.76rem;gap:7px;line-height:1.4;padding:9px 0}.level-link small{font-size:.65rem;margin-top:4px}.progress-box{margin-top:19px}.side-actions{flex-direction:row;flex-wrap:wrap}.storage-note{margin:7px 0 12px}.section-count{display:none}.exercise{padding:18px 16px;border-radius:12px}.card-description{font-size:.89rem}.card-top{margin-bottom:13px}.pair{gap:11px}pre{font-size:12px;padding:14px}.section-intro h2{font-size:2rem}.level{margin-bottom:42px}.closing{padding:23px}.footer-grid{display:block}.footer-grid>span{display:block;margin-top:15px}.project-link{font-size:.72rem}.tags{gap:6px}.tag{font-size:11px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{@page{margin:15mm}body{background:white;color:black;font-size:10pt}.wrap{width:100%}.topbar{position:static;background:white}.bar-inner{min-height:45px}.bar-label,.hero-aside,.sidebar,.guide-note,.copy,.notes-area,.card-bottom,.toast,.no-print,.setup{display:none!important}.hero{display:block;padding:20px 0}.hero h1{font-size:34pt;margin-bottom:15px}.hero .intro{font-size:11pt}.tags{margin-top:10px}.tag{font-size:8pt}.layout{display:block}.section-intro{margin:16px 0}.section-intro h2{font-size:23pt}.exercise{padding:16px;margin-bottom:15px;border-color:#bbb;overflow:visible}.pair{grid-template-columns:1fr 1fr;gap:10px}.code-panel{background:#f0f1ef;color:black;break-inside:avoid}.code-label{color:black;border-color:#bbb}.code-label .cs{color:black}pre{font-size:8pt;white-space:pre-wrap;overflow:visible}pre code{white-space:pre-wrap;overflow-wrap:anywhere}.prompt{background:#f0f1ef}.reveal{color:black}details{break-inside:avoid}details>summary{list-style:none}.sources{font-size:8pt}a{color:black}.closing{background:#f0f1ef;padding:20px}.footer{font-size:8pt}.level{margin-bottom:20px}h3{font-size:17pt;break-after:avoid}.card-top{break-after:avoid}textarea{display:none}}
+
+/* Optional learning resources: no external embeds or assets. */
+.further{margin-top:7px}.further>summary{color:var(--green)}.resource-body{padding:0 0 15px}.resource-intro{font-size:.85rem;color:var(--muted);margin:0 0 14px}.resource-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}.resource-list li{border:1px solid var(--line);border-radius:9px;padding:13px 15px;background:#f6f7f0;min-width:0}.resource-kind{display:block;font:700 10px Consolas,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}.resource-list a{font-size:.87rem;font-weight:650;overflow-wrap:anywhere}.resource-list p{font-size:.79rem;color:var(--muted);margin:5px 0 0;line-height:1.55}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media print{.resource-list{display:block}.resource-list li{background:white;break-inside:avoid;margin-bottom:7px;padding:9px}.resource-list a{font-size:9pt}.resource-list p{font-size:8pt}.resource-kind{font-size:7pt}.further{break-inside:auto}.resource-intro{font-size:9pt}.resource-list a::after{content:' (' attr(href) ')';font-size:7pt;font-weight:400;overflow-wrap:anywhere}}
+</style>
+</head>
+<body>
+<a class="skip" href="#exercises">Skip to exercises</a>
+<header class="topbar"><div class="wrap bar-inner"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">{ }</span> The stack shift</a><span class="bar-label">NODE.JS → C# &nbsp; / &nbsp; SESSIONS 01–03</span></div></header>
+<main id="top" class="wrap">
+<section class="hero" aria-labelledby="page-title"><div><p class="eyebrow">A field guide for experienced engineers</p><h1 id="page-title">Same instincts.<br><span>New language.</span></h1><p class="intro">You already know how to build software. These small comparisons help you spot where C# works like JavaScript—and where the resemblance is misleading.</p><div class="tags"><span class="tag">12 exercises</span><span class="tag">3 levels</span><span class="tag">5–15 min each</span><span class="tag">Works offline</span></div></div><aside class="hero-aside" aria-label="How to use this guide"><p class="eyebrow">Keep your engineering instincts</p><div class="bridge">Node.js <span>→</span> C# / .NET</div><ol class="routine"><li><strong>Predict</strong> before you run.</li><li><strong>Change</strong> one small thing.</li><li><strong>Explain</strong> the behavior.</li></ol><p class="aside-note">Some comparisons show a difference. Others reveal a useful similarity.</p></aside></section>
+<div class="guide-note"><p><strong>Your scope:</strong> console applications, in-memory collections, OOP, LINQ and dependency injection. Stretch exercises deepen Sessions 1–3 concepts.</p><p><strong>The comparison:</strong> plain JavaScript running in Node.js, rather than TypeScript. These are independent examples, designed to be explored one at a time.</p></div>
+<div class="layout" id="exercises">
+<aside class="sidebar" aria-label="Exercise navigation"><p class="sidebar-title">Choose your level</p><nav class="level-nav"><a class="level-link" href="#foundations"><span class="level-no">01</span><span><strong>Foundations</strong><small>Types · input · collections</small></span></a><a class="level-link" href="#practice"><span class="level-no">02</span><span><strong>Project practice</strong><small>OOP · contracts · LINQ</small></span></a><a class="level-link" href="#stretch"><span class="level-no">03</span><span><strong>Stretch yourself</strong><small>Timing · identity · DI</small></span></a></nav><div class="progress-box"><p id="progress-label" aria-live="polite">0 of 12 explored</p><progress id="progress" max="12" value="0" aria-labelledby="progress-label"></progress><p class="storage-note" id="storage-note">Notes and progress stay in this browser when storage is available. They are not sent anywhere or saved into the HTML file.</p></div><div class="side-actions"><button type="button" id="print">Print / save as PDF</button><button type="button" id="export">Download my notes</button><button type="button" id="reset">Reset my progress</button></div></aside>
+<div class="content">
+<details class="setup"><summary>Before you run the examples</summary><p>Use a separate scratch console project for C#, with modern .NET and nullable analysis enabled. Standard <code>System</code>, <code>System.Collections.Generic</code> and <code>System.Linq</code> usings are assumed; add them at the top if implicit usings are disabled. Run each snippet separately. Top-level statements appear before type declarations. Exercise 01 intentionally contains a compilation error. Exercise 12 additionally uses <code>Microsoft.Extensions.DependencyInjection</code>; use your existing Session 3 setup. The page itself displays code; it does not execute JavaScript or C# snippets.</p><p>You can read the exercises offline. Each answer has an optional &ldquo;Want to go deeper?&rdquo; section with focused references. Start with free Microsoft documentation; videos and courses are optional. Pluralsight links are labeled subscription because full access generally needs a paid plan or trial. Some curriculum courses use older C# version names; focus on the linked concepts and use current Microsoft documentation for precise behavior. Resource links open in a new tab and need internet access. Printing includes expanded hints, explanations and resources; use the print button to prepare them.</p></details>
+<noscript><p class="setup">JavaScript is disabled. Exercises, hints and explanations still work. Notes will not persist, and progress, copy and export controls require JavaScript.</p></noscript>
+<section class="level" id="foundations" aria-labelledby="foundations-title"><div class="section-intro"><div><p class="level-kicker">01 / FOUNDATIONS</p><h2 id="foundations-title">Start with the familiar.</h2><p>Small syntax changes. Important differences in meaning.</p></div><span class="section-count">EXERCISES 01–04</span></div>
+<article class="exercise" id="exercise-01"><div class="card-top"><span class="card-id">01 / TYPE INFERENCE</span><span class="duration">5 min · Session 1</span></div><h3>Same variable, new type?</h3><p class="card-description">The compiler can infer a type without making the variable dynamically typed.</p><div class="pair"><div class="code-panel"><div class="code-label">Node.js / JavaScript</div><pre tabindex="0"><code>let count = 3;
+count = "three";
+
+console.log(count);</code></pre></div><div class="code-panel"><div class="code-label"><span class="cs">C#</span></div><pre tabindex="0"><code>var count = 3;
+count = "three";
+
+Console.WriteLine(count);</code></pre></div></div><div class="prompt"><span class="micro">Predict</span><p>Which snippet runs? At what stage does the other one fail?</p></div><p class="task"><strong>Try a change →</strong> Keep the C# variable numeric and print <code>Count: 3</code> using string interpolation.</p><details><summary>Give me a hint</summary><div class="reveal"><p>What type does the initial value <code>3</code> have? Interpolation changes the output string; it does not need to change that variable's type.</p></div></details><details class="answer"><summary>Reveal the explanation</summary><div class="reveal"><p class="answer-label">JavaScript: three · C#: compilation error</p><p>C# infers <code>int</code> from the initializer. Assigning a string to that variable is rejected before execution. <code>var</code> is compile-time type inference, not the equivalent of JavaScript's <code>let</code> or C#'s <code>dynamic</code>.</p><p>Explain it back: why can two C# variables both use <code>var</code> and still have different fixed types?</p></div></details><details class="further"><summary>Want to go deeper?</summary><div class="resource-body"><p class="resource-intro">Understand the inferred type before choosing how to format the output.</p><ul class="resource-list"><li><span class="resource-kind">Read / free</span><a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/declarations#implicitly-typed-local-variables" target="_blank" rel="noopener noreferrer">C# type inference ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Microsoft Learn — reference for the behavior explained above.</p></li><li><span class="resource-kind">Watch / free</span><a href="https://www.youtube.com/playlist?list=PLdo4fOcmZ0oULFjxrOagaERVAMbmG20Xe" target="_blank" rel="noopener noreferrer">C# for Beginners — .NET YouTube series ↗<span class="sr-only"> (opens in a new tab)</span></a><p>A broader refresher on variables, strings and numbers; select the topic you need.</p></li><li><span class="resource-kind">Course / subscription</span><a href="https://www.pluralsight.com/courses/c-sharp-10-fundamentals" target="_blank" rel="noopener noreferrer">C# Fundamentals — Pluralsight ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Focus on C# syntax, types and operators. This course is also listed in Session 1.</p></li></ul></div></details><div class="card-bottom"><label class="done-label"><input type="checkbox" data-done="01"> I can explain this</label><span class="project-link">Connect it: IDs and counters</span></div></article>
+<article class="exercise" id="exercise-02"><div class="card-top"><span class="card-id">02 / INPUT &amp; PARSING</span><span class="duration">5–8 min · Session 1</span></div><h3>A number—or just a numeric prefix?</h3><p class="card-description">Converting input and validating a business rule are separate decisions.</p><div class="pair"><div class="code-panel"><div class="code-label">Node.js / JavaScript</div><pre tabindex="0"><code>const input = "12cats";
+const quantity = Number.parseInt(input, 10);
+
+console.log(quantity);</code></pre></div><div class="code-panel"><div class="code-label"><span class="cs">C#</span></div><pre tabindex="0"><code>string input = "12cats";
+
+if (int.TryParse(input, out int quantity))
+    Console.WriteLine(quantity);
+else
+    Console.WriteLine("Invalid number");</code></pre></div></div><div class="prompt"><span class="micro">Predict</span><p>Does either snippet accept this input? Does parsing <code>-2</code> successfully mean it is an acceptable quantity?</p></div><p class="task"><strong>Try a change →</strong> Compare <code>"12"</code>, <code>""</code>, <code>"-2"</code> and <code>"12.5"</code>. Write down the conversion result separately from your validation decision.</p><details><summary>Give me a hint</summary><div class="reveal"><p>JavaScript's <code>parseInt</code> can stop after reading a valid numeric prefix. C# <code>TryParse</code> returns a Boolean and supplies its numeric result through <code>out</code>.</p></div></details><details class="answer"><summary>Reveal the explanation</summary><div class="reveal"><p class="answer-label">JavaScript: 12 · C#: Invalid number</p><p>For the other inputs, JavaScript produces <code>12</code>, <code>NaN</code>, <code>-2</code>, <code>12</code>. The C# integer parse succeeds for <code>"12"</code> and <code>"-2"</code>, and fails for the empty string and <code>"12.5"</code>. These parsing methods are useful, but their acceptance rules are different.</p><p>A successfully parsed integer can still violate a range or business rule. Consider why ordinary invalid user input usually needs a validation response rather than an exception.</p></div></details><details class="further"><summary>Want to go deeper?</summary><div class="resource-body"><p class="resource-intro">Compare conversion behavior first, then decide which inputs the operation should accept.</p><ul class="resource-list"><li><span class="resource-kind">Read / free</span><a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32.tryparse?view=net-10.0" target="_blank" rel="noopener noreferrer">int.TryParse ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Microsoft Learn — reference for the behavior explained above.</p></li><li><span class="resource-kind">Read / free</span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt" target="_blank" rel="noopener noreferrer">parseInt ↗<span class="sr-only"> (opens in a new tab)</span></a><p>MDN JavaScript reference — reference for the behavior explained above.</p></li><li><span class="resource-kind">Course / subscription</span><a href="https://www.pluralsight.com/courses/c-sharp-10-fundamentals" target="_blank" rel="noopener noreferrer">C# Fundamentals — Pluralsight ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Review types and conversion as a companion to the precise TryParse reference above.</p></li></ul></div></details><div class="card-bottom"><label class="done-label"><input type="checkbox" data-done="02"> I can explain this</label><span class="project-link">Connect it: console input validation</span></div></article>
+<article class="exercise" id="exercise-03"><div class="card-top"><span class="card-id">03 / NULLABILITY</span><span class="duration">5–8 min · Session 1</span></div><h3>Missing is not the same as empty.</h3><p class="card-description">Null-safe access looks familiar. C# also lets you describe missing values in the type.</p><div class="pair"><div class="code-panel"><div class="code-label">Node.js / JavaScript</div><pre tabindex="0"><code>const nickname = null;
+
+console.log(
+  nickname?.toUpperCase() ?? "Guest"
+);</code></pre></div><div class="code-panel"><div class="code-label"><span class="cs">C#</span></div><pre tabindex="0"><code>#nullable enable
+string? nickname = null;
+
+Console.WriteLine(
+    nickname?.ToUpperInvariant() ?? "Guest"
+);</code></pre></div></div><div class="prompt"><span class="micro">Predict</span><p>What does each print now? What changes if the value becomes <code>""</code>?</p></div><p class="task"><strong>Try a change →</strong> Make null, empty and whitespace-only input all display <code>Guest</code>. Keep the original value available.</p><details><summary>Give me a hint</summary><div class="reveal"><p><code>??</code> is not an empty-string check. In C#, investigate <code>string.IsNullOrWhiteSpace</code>; in JavaScript, consider a null-safe trim before checking length.</p></div></details><details class="answer"><summary>Reveal the explanation</summary><div class="reveal"><p class="answer-label">Both: Guest · With an empty string: a blank line</p><p>C# <code>string?</code> expresses that null is possible. With nullable analysis enabled, dereferencing a potentially null value can produce a compiler warning. The annotation does not create runtime validation or prevent all nulls.</p><p>The null-forgiving operator <code>!</code> suppresses a warning; it does not supply a missing value or perform a runtime check. JavaScript also has <code>undefined</code>, which the shown <code>??</code> expression handles.</p></div></details><details class="further"><summary>Want to go deeper?</summary><div class="resource-body"><p class="resource-intro">Go deeper on compiler analysis, null-safe operators and their limits.</p><ul class="resource-list"><li><span class="resource-kind">Read / free</span><a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/nullable-reference-types" target="_blank" rel="noopener noreferrer">nullable reference types ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Microsoft Learn — reference for the behavior explained above.</p></li><li><span class="resource-kind">Practice / free</span><a href="https://learn.microsoft.com/en-us/training/modules/csharp-null-safety/" target="_blank" rel="noopener noreferrer">Null safety in C# — Microsoft Learn ↗<span class="sr-only"> (opens in a new tab)</span></a><p>A focused module on nullable context, annotations and the null-related operators, with a practice exercise.</p></li></ul></div></details><div class="card-bottom"><label class="done-label"><input type="checkbox" data-done="03"> I can explain this</label><span class="project-link">Connect it: optional notes and required names</span></div></article>
+<article class="exercise" id="exercise-04"><div class="card-top"><span class="card-id">04 / SHARED REFERENCES</span><span class="duration">5 min · Session 1</span></div><h3>Two names. One collection.</h3><p class="card-description">Some behaviors transfer directly from JavaScript to C#.</p><div class="pair"><div class="code-panel"><div class="code-label">Node.js / JavaScript</div><pre tabindex="0"><code>const names = ["Ada", "Lin"];
+const otherNames = names;
+
+otherNames.push("Sam");
+
+console.log(names.length);</code></pre></div><div class="code-panel"><div class="code-label"><span class="cs">C#</span></div><pre tabindex="0"><code>var names = new List&lt;string&gt; { "Ada", "Lin" };
+var otherNames = names;
+
+otherNames.Add("Sam");
+
+Console.WriteLine(names.Count);</code></pre></div></div><div class="prompt"><span class="micro">Predict</span><p>What is the original collection's size in each language? Did assignment copy the elements?</p></div><p class="task"><strong>Try a change →</strong> Create a separate collection before adding Sam, so the original size stays at two.</p><details><summary>Give me a hint</summary><div class="reveal"><p>Look at array spread in JavaScript and <code>new List&lt;string&gt;(names)</code> in C#. Think about the difference between copying a reference and creating a collection.</p></div></details><details class="answer"><summary>Reveal the explanation</summary><div class="reveal"><p class="answer-label">Both: 3</p><p>Both variables refer to the same collection. C# <code>List&lt;T&gt;</code> is a reference type. By contrast, assigning a simple value such as an <code>int</code> copies that value.</p><p>JavaScript <code>const</code> stops rebinding the variable; it does not freeze the array. Creating a new collection separates its membership, but does not automatically deep-copy mutable elements. Exercise 10 explores that boundary.</p></div></details><details class="further"><summary>Want to go deeper?</summary><div class="resource-body"><p class="resource-intro">Trace which variables share an instance before thinking about copying.</p><ul class="resource-list"><li><span class="resource-kind">Read / free</span><a href="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/#value-types-and-reference-types" target="_blank" rel="noopener noreferrer">value and reference types ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Microsoft Learn — reference for the behavior explained above.</p></li><li><span class="resource-kind">Watch / free</span><a href="https://www.youtube.com/playlist?list=PLdo4fOcmZ0oULFjxrOagaERVAMbmG20Xe" target="_blank" rel="noopener noreferrer">C# for Beginners — collections episodes ↗<span class="sr-only"> (opens in a new tab)</span></a><p>In the official .NET playlist, choose Parts 12–13: lists, collections, arrays and indexing.</p></li><li><span class="resource-kind">Course / subscription</span><a href="https://www.pluralsight.com/courses/c-sharp-10-fundamentals" target="_blank" rel="noopener noreferrer">C# Fundamentals — Pluralsight ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Use the classes, objects and collections material to reinforce the reference-type model.</p></li></ul></div></details><div class="card-bottom"><label class="done-label"><input type="checkbox" data-done="04"> I can explain this</label><span class="project-link">Connect it: shared in-memory state</span></div></article>
+</section>
+<section class="level" id="practice" aria-labelledby="practice-title"><div class="section-intro"><div><p class="level-kicker">02 / PROJECT PRACTICE</p><h2 id="practice-title">Give your code a contract.</h2><p>Control state, express intent and work with collections.</p></div><span class="section-count">EXERCISES 05–08</span></div>
+<article class="exercise" id="exercise-05"><div class="card-top"><span class="card-id">05 / ENCAPSULATION</span><span class="duration">8 min · Sessions 1–2</span></div><h3>Readable outside. Changeable inside.</h3><p class="card-description">Properties can expose state without allowing every caller to replace it.</p><div class="pair"><div class="code-panel"><div class="code-label">Node.js / JavaScript</div><pre tabindex="0"><code>class Counter {
+  #value = 0;
+  get value() { return this.#value; }
+  increment() { this.#value++; }
+}
+
+const counter = new Counter();
+counter.increment();
+console.log(counter.value);</code></pre></div><div class="code-panel"><div class="code-label"><span class="cs">C#</span></div><pre tabindex="0"><code>var counter = new Counter();
+counter.Increment();
+Console.WriteLine(counter.Value);
+
+class Counter
+{
+    public int Value { get; private set; }
+    public void Increment() =&gt; Value++;
+}</code></pre></div></div><div class="prompt"><span class="micro">Predict</span><p>Both print one. Can outside code set the value to <code>-100</code>? Where is the boundary enforced?</p></div><p class="task"><strong>Try a change →</strong> Add a reset operation that returns the counter to zero while preserving the external read-only boundary.</p><details><summary>Give me a hint</summary><div class="reveal"><p>A public operation can modify private state. A C# property can have different accessibility for its getter and setter.</p></div></details><details class="answer"><summary>Reveal the explanation</summary><div class="reveal"><p>C# rejects an external assignment to <code>Value</code> at compile time because its setter is private. JavaScript has no setter for <code>value</code>; assigning it throws in strict mode, and is ignored in non-strict mode. The <code>#value</code> field is private.</p><p>Encapsulation lets the type control its own transitions. A private setter does not automatically enforce every business rule: inspect which operations are allowed and what each guarantees.</p></div></details><details class="further"><summary>Want to go deeper?</summary><div class="resource-body"><p class="resource-intro">Look for the difference between exposing a value and exposing a way to change it.</p><ul class="resource-list"><li><span class="resource-kind">Read / free</span><a href="https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/properties" target="_blank" rel="noopener noreferrer">C# properties ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Microsoft Learn — reference for the behavior explained above.</p></li><li><span class="resource-kind">Watch / free</span><a href="https://www.youtube.com/watch?v=Vp0vVzJgJ5g" target="_blank" rel="noopener noreferrer">Object-oriented Programming — C# for Beginners, Part 18 ↗<span class="sr-only"> (opens in a new tab)</span></a><p>The Session 2 video on modeling objects and defining their members.</p></li><li><span class="resource-kind">Watch / free</span><a href="https://learn.microsoft.com/en-us/shows/csharp-for-beginners/object-oriented-programming-oop-csharp-for-beginners" target="_blank" rel="noopener noreferrer">Same episode on Microsoft Learn ↗<span class="sr-only"> (opens in a new tab)</span></a><p>An alternative to the YouTube link.</p></li><li><span class="resource-kind">Course / subscription</span><a href="https://www.pluralsight.com/courses/c-sharp-10-object-oriented-programming" target="_blank" rel="noopener noreferrer">Object-oriented Programming in C# — Pluralsight ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Focus on properties, constructors and composition. This course is also listed in Session 2.</p></li></ul></div></details><div class="card-bottom"><label class="done-label"><input type="checkbox" data-done="05"> I can explain this</label><span class="project-link">Connect it: controlled state changes</span></div></article>
+<article class="exercise" id="exercise-06"><div class="card-top"><span class="card-id">06 / ENUMS &amp; INTENT</span><span class="duration">5–8 min · Session 2</span></div><h3>A choice is more than a label.</h3><p class="card-description">A fixed set of choices deserves a representation that expresses intent.</p><div class="pair"><div class="code-panel"><div class="code-label">Node.js / JavaScript</div><pre tabindex="0"><code>const Mode = Object.freeze({
+  Draft: "draft",
+  Published: "published"
+});
+
+const mode = Mode.Draft;
+console.log(mode === "Draft");</code></pre></div><div class="code-panel"><div class="code-label"><span class="cs">C#</span></div><pre tabindex="0"><code>Mode mode = Mode.Draft;
+Console.WriteLine(mode == Mode.Draft);
+
+enum Mode
+{
+    Draft,
+    Published
+}</code></pre></div></div><div class="prompt"><span class="micro">Predict</span><p>Why do these comparisons produce different results? Is a member's name the same thing as its display text?</p></div><p class="task"><strong>Try a change →</strong> Give the draft option a friendly display label, <code>Work in progress</code>, while retaining the original value for decisions.</p><details><summary>Give me a hint</summary><div class="reveal"><p>Separate presentation from identity. Investigate a small mapping or switch rather than parsing the friendly label back into an enum.</p></div></details><details class="answer"><summary>Reveal the explanation</summary><div class="reveal"><p class="answer-label">JavaScript: false · C#: True</p><p>The JavaScript value is <code>"draft"</code>, which differs from <code>"Draft"</code>. Comparing against <code>Mode.Draft</code> avoids duplicating the literal. C# uses a distinct enum type and a declared member.</p><p>An enum is not full input validation: casting an integer such as <code>(Mode)99</code> can create an unnamed enum value. Validate external input where it enters the application. Display text can change without changing the selected value.</p></div></details><details class="further"><summary>Want to go deeper?</summary><div class="resource-body"><p class="resource-intro">Keep a choice’s identity separate from its presentation, and validate external values.</p><ul class="resource-list"><li><span class="resource-kind">Read / free</span><a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/enum" target="_blank" rel="noopener noreferrer">enumeration types ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Microsoft Learn — reference for the behavior explained above.</p></li><li><span class="resource-kind">Course / subscription</span><a href="https://www.pluralsight.com/courses/c-sharp-10-fundamentals" target="_blank" rel="noopener noreferrer">C# Fundamentals — Pluralsight ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Use this Session 1 course for broader type-system context; the enum reference above supplies the precise enum rules.</p></li></ul></div></details><div class="card-bottom"><label class="done-label"><input type="checkbox" data-done="06"> I can explain this</label><span class="project-link">Connect it: typed menu choices</span></div></article>
+<article class="exercise" id="exercise-07"><div class="card-top"><span class="card-id">07 / INTERFACES &amp; POLYMORPHISM</span><span class="duration">10 min · Session 2</span></div><h3>Same capability, different types.</h3><p class="card-description">Callers can depend on behavior without knowing the concrete implementation.</p><div class="pair"><div class="code-panel"><div class="code-label">Node.js / JavaScript</div><pre tabindex="0"><code>function describe(item) {
+  return item.describe();
+}
+
+const label = {
+  describe: () =&gt; "Label"
+};
+
+console.log(describe(label));</code></pre></div><div class="code-panel"><div class="code-label"><span class="cs">C#</span></div><pre tabindex="0"><code>IDescribable item = new Label();
+Console.WriteLine(item.Describe());
+
+interface IDescribable
+{
+    string Describe();
+}
+
+class Label : IDescribable
+{
+    public string Describe() =&gt; "Label";
+}</code></pre></div></div><div class="prompt"><span class="micro">Predict</span><p>What happens if the implementation lacks the expected method? When does each language detect it?</p></div><p class="task"><strong>Try a change →</strong> Add a second implementation with different output. Call both through the same contract, without checking their concrete types.</p><details><summary>Give me a hint</summary><div class="reveal"><p>JavaScript checks the operation when it runs. C# verifies that the class fulfills the declared interface. A collection can hold values through that interface type.</p></div></details><details class="answer"><summary>Reveal the explanation</summary><div class="reveal"><p class="answer-label">Both: Label</p><p>JavaScript's function uses whichever object provides a callable <code>describe</code> member. With a missing member, that call fails at runtime. In this C# example, omitting <code>Describe</code> from a class that declares <code>: IDescribable</code> causes a compilation error. Merely having a matching method does not implicitly implement the interface.</p><p>An interface supplies a capability contract; a base class can also share state and implementation. Prefer composition when the relationship is “has a collaborator”; inheritance should express a justified “is a” relationship.</p></div></details><details class="further"><summary>Want to go deeper?</summary><div class="resource-body"><p class="resource-intro">Follow the declared contract, then compare interfaces with shared implementation.</p><ul class="resource-list"><li><span class="resource-kind">Read / free</span><a href="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/interfaces" target="_blank" rel="noopener noreferrer">interfaces ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Microsoft Learn — reference for the behavior explained above.</p></li><li><span class="resource-kind">Read / free</span><a href="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/tutorials/oop" target="_blank" rel="noopener noreferrer">Object-oriented programming — Microsoft Learn ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Compare abstraction, encapsulation, inheritance and polymorphism.</p></li><li><span class="resource-kind">Course / subscription</span><a href="https://www.pluralsight.com/courses/c-sharp-10-object-oriented-programming" target="_blank" rel="noopener noreferrer">Object-oriented Programming in C# — Pluralsight ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Choose Reusing Code through Interfaces, especially Understanding Interfaces and Interfaces and Polymorphism.</p></li></ul></div></details><div class="card-bottom"><label class="done-label"><input type="checkbox" data-done="07"> I can explain this</label><span class="project-link">Connect it: interchangeable behavior</span></div></article>
+<article class="exercise" id="exercise-08"><div class="card-top"><span class="card-id">08 / LINQ TRANSFORMATIONS</span><span class="duration">10 min · Session 2b</span></div><h3>From loops to a data pipeline.</h3><p class="card-description">Filter, group and project. Keep the computation distinct from how you display it.</p><div class="pair"><div class="code-panel"><div class="code-label">Node.js / JavaScript</div><pre tabindex="0"><code>const words = ["pear", "plum", "fig", "pear"];
+const counts = new Map();
+
+for (const word of words.filter(w =&gt; w.length &gt; 3)) {
+  counts.set(word, (counts.get(word) ?? 0) + 1);
+}
+
+for (const [word, count] of counts) {
+  console.log(`${word}: ${count}`);
+}</code></pre></div><div class="code-panel"><div class="code-label"><span class="cs">C#</span></div><pre tabindex="0"><code>string[] words = { "pear", "plum", "fig", "pear" };
+var counts = words
+    .Where(w =&gt; w.Length &gt; 3)
+    .GroupBy(w =&gt; w)
+    .Select(g =&gt; new { Word = g.Key, Count = g.Count() });
+
+foreach (var entry in counts)
+    Console.WriteLine($"{entry.Word}: {entry.Count}");</code></pre></div></div><div class="prompt"><span class="micro">Predict</span><p>Which words remain, and what are their counts? What is each C# operator responsible for?</p></div><p class="task"><strong>Try a change →</strong> Display the results alphabetically. Then use an empty source and describe the output.</p><details><summary>Give me a hint</summary><div class="reveal"><p><code>Where</code> filters; <code>GroupBy</code> creates groups; <code>Select</code> changes the result shape. Investigate <code>OrderBy</code> for ordering. An empty sequence has no groups.</p></div></details><details class="answer"><summary>Reveal the explanation</summary><div class="reveal"><p class="answer-label">Both: pear: 2, then plum: 1 · Empty source: no lines</p><p>The C# anonymous result object holds the group's key and size. You can name intermediate steps instead of forcing every operation into one chain. The JavaScript loop is one valid implementation; it is not the only “Node.js way.”</p><p>For a “most common” result, think separately about ties and empty input. Sorting and choosing the first result silently makes a tie-breaking decision unless that behavior is intentional.</p></div></details><details class="further"><summary>Want to go deeper?</summary><div class="resource-body"><p class="resource-intro">Name the purpose of each operation before adding more operators.</p><ul class="resource-list"><li><span class="resource-kind">Read / free</span><a href="https://learn.microsoft.com/en-us/dotnet/csharp/linq/standard-query-operators/grouping-data" target="_blank" rel="noopener noreferrer">LINQ grouping ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Microsoft Learn — reference for the behavior explained above.</p></li><li><span class="resource-kind">Watch / free</span><a href="https://www.youtube.com/watch?v=jAPcP-QbCGA" target="_blank" rel="noopener noreferrer">LINQ Method Syntax vs Query — C# for Beginners, Part 17 ↗<span class="sr-only"> (opens in a new tab)</span></a><p>The Session 2b video on composing operations and reading method syntax.</p></li><li><span class="resource-kind">Watch / free</span><a href="https://learn.microsoft.com/en-us/shows/csharp-for-beginners/linq-method-syntax-vs-query-csharp-for-beginners" target="_blank" rel="noopener noreferrer">Same episode on Microsoft Learn ↗<span class="sr-only"> (opens in a new tab)</span></a><p>An alternative to the YouTube link.</p></li><li><span class="resource-kind">Course / subscription</span><a href="https://www.pluralsight.com/courses/linq-fundamentals-csharp-10" target="_blank" rel="noopener noreferrer">LINQ Fundamentals in C# — Pluralsight ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Focus on selecting, filtering, grouping and aggregating collections. Optional additional course.</p></li></ul></div></details><div class="card-bottom"><label class="done-label"><input type="checkbox" data-done="08"> I can explain this</label><span class="project-link">Connect it: reporting transformations</span></div></article>
+</section>
+<section class="level" id="stretch" aria-labelledby="stretch-title"><div class="section-intro"><div><p class="level-kicker">03 / STRETCH YOURSELF</p><h2 id="stretch-title">Look beneath the syntax.</h2><p>The concepts are in scope. The reasoning goes deeper.</p></div><span class="section-count">EXERCISES 09–12</span></div>
+<article class="exercise" id="exercise-09"><div class="card-top"><span class="card-id">09 / DEFERRED EXECUTION</span><span class="duration">10 min · Session 2b</span></div><h3>When does the work happen?</h3><p class="card-description">A query declaration can describe work without doing it yet.</p><div class="pair"><div class="code-panel"><div class="code-label">Node.js / JavaScript</div><pre tabindex="0"><code>const numbers = [1, 2, 3];
+const selected = numbers.filter(n =&gt; n &gt; 1);
+
+numbers.push(4);
+
+console.log(selected.join(", "));
+console.log(selected.join(", "));</code></pre></div><div class="code-panel"><div class="code-label"><span class="cs">C#</span></div><pre tabindex="0"><code>var numbers = new List&lt;int&gt; { 1, 2, 3 };
+var selected = numbers.Where(n =&gt; n &gt; 1);
+
+numbers.Add(4);
+
+Console.WriteLine(string.Join(", ", selected));
+Console.WriteLine(string.Join(", ", selected));</code></pre></div></div><div class="prompt"><span class="micro">Predict</span><p>What does each print? How often is the predicate evaluated when each result is printed twice?</p></div><p class="task"><strong>Try a change →</strong> Add <code>.ToList()</code> immediately after C# <code>Where(...)</code>. Add logging inside each predicate to observe timing and repetition.</p><details><summary>Give me a hint</summary><div class="reveal"><p>JavaScript array <code>filter</code> constructs a new array immediately. C# LINQ-to-Objects <code>Where</code> returns a deferred sequence. Printing through <code>string.Join</code> enumerates that sequence.</p></div></details><details class="answer"><summary>Reveal the explanation</summary><div class="reveal"><p class="answer-label">JavaScript: 2, 3 twice · C#: 2, 3, 4 twice</p><p>JavaScript's predicate runs three times during <code>filter</code>. C#'s predicate runs four times per enumeration here, eight total. Materializing before the addition evaluates three elements once and stores the results, so the C# output becomes <code>2, 3</code> twice.</p><p>This is deferred execution, not asynchronous execution. Not all LINQ operators defer work: scalar operations such as <code>Count()</code> return a result immediately. Avoid side effects inside query predicates; logging here is only an observation experiment.</p></div></details><details class="further"><summary>Want to go deeper?</summary><div class="resource-body"><p class="resource-intro">Pay attention to when enumeration happens, rather than when the variable is declared.</p><ul class="resource-list"><li><span class="resource-kind">Read / free</span><a href="https://learn.microsoft.com/en-us/dotnet/csharp/linq/get-started/introduction-to-linq-queries" target="_blank" rel="noopener noreferrer">LINQ execution ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Microsoft Learn — reference for the behavior explained above.</p></li><li><span class="resource-kind">Read / free</span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" target="_blank" rel="noopener noreferrer">Array.filter ↗<span class="sr-only"> (opens in a new tab)</span></a><p>MDN JavaScript reference — reference for the behavior explained above.</p></li><li><span class="resource-kind">Watch / free</span><a href="https://www.youtube.com/watch?v=4ro5UCqU0P4" target="_blank" rel="noopener noreferrer">LINQ and IEnumerable — C# for Beginners, Part 15 ↗<span class="sr-only"> (opens in a new tab)</span></a><p>The Session 2b video introducing query definition, enumeration and deferred execution.</p></li><li><span class="resource-kind">Course / subscription</span><a href="https://www.pluralsight.com/courses/linq-fundamentals-csharp-10" target="_blank" rel="noopener noreferrer">LINQ Fundamentals in C# — Pluralsight ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Choose Illustrating Deferred Execution Using ForEach() and Step-through Demo of Deferred Execution.</p></li></ul></div></details><div class="card-bottom"><label class="done-label"><input type="checkbox" data-done="09"> I can explain this</label><span class="project-link">Connect it: repeated report enumeration</span></div></article>
+<article class="exercise" id="exercise-10"><div class="card-top"><span class="card-id">10 / SHALLOW COPYING</span><span class="duration">10 min · Sessions 1–2</span></div><h3>A new list is not a new object graph.</h3><p class="card-description">A collection snapshot separates membership. Its elements may still be shared.</p><div class="pair"><div class="code-panel"><div class="code-label">Node.js / JavaScript</div><pre tabindex="0"><code>const original = [{ name: "Ada" }];
+const copy = [...original];
+
+copy[0].name = "Lin";
+copy.push({ name: "Sam" });
+
+console.log(original[0].name);
+console.log(original.length);</code></pre></div><div class="code-panel"><div class="code-label"><span class="cs">C#</span></div><pre tabindex="0"><code>var original = new List&lt;Person&gt;
+    { new Person { Name = "Ada" } };
+var copy = original.ToList();
+copy[0].Name = "Lin";
+copy.Add(new Person { Name = "Sam" });
+
+Console.WriteLine(original[0].Name);
+Console.WriteLine(original.Count);
+
+class Person
+{
+    public string Name { get; set; } = "";
+}</code></pre></div></div><div class="prompt"><span class="micro">Predict</span><p>Does the original name change? Does the original collection gain a second element?</p></div><p class="task"><strong>Try a change →</strong> Create new element objects while copying, so changing a copied name leaves the original name untouched.</p><details><summary>Give me a hint</summary><div class="reveal"><p>Draw two containers pointing to the same element. Then consider JavaScript <code>map</code> or C# <code>Select</code> to construct a new element per entry.</p></div></details><details class="answer"><summary>Reveal the explanation</summary><div class="reveal"><p class="answer-label">Both: Lin, then 1</p><p>The new collection contains a copy of the reference to the original person. Mutating that person is visible through both collections. Adding another person only changes the new collection's membership.</p><p>Copying each person solves this example, but nested mutable data would introduce another boundary to consider. A read-only collection interface also does not make its elements immutable.</p></div></details><details class="further"><summary>Want to go deeper?</summary><div class="resource-body"><p class="resource-intro">Separate copying a container from copying the objects reachable through it.</p><ul class="resource-list"><li><span class="resource-kind">Read / free</span><a href="https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.tolist?view=net-10.0" target="_blank" rel="noopener noreferrer">Enumerable.ToList ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Microsoft Learn — reference for the behavior explained above.</p></li><li><span class="resource-kind">Read / free</span><a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types" target="_blank" rel="noopener noreferrer">Reference types — Microsoft Learn ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Revisit what is shared when references to an object are copied.</p></li><li><span class="resource-kind">Watch / free</span><a href="https://www.youtube.com/playlist?list=PLdo4fOcmZ0oULFjxrOagaERVAMbmG20Xe" target="_blank" rel="noopener noreferrer">C# for Beginners — collections episodes ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Parts 12–13 reinforce collection operations. Use the reference-type documentation for the copying rules.</p></li></ul></div></details><div class="card-bottom"><label class="done-label"><input type="checkbox" data-done="10"> I can explain this</label><span class="project-link">Connect it: mutable report results</span></div></article>
+<article class="exercise" id="exercise-11"><div class="card-top"><span class="card-id">11 / IDENTITY &amp; EQUALITY</span><span class="duration">10–12 min · Session 1 stretch</span></div><h3>Equal data. Different instances.</h3><p class="card-description">Records add value equality without turning a record class into a value type.</p><div class="pair"><div class="code-panel"><div class="code-label">Node.js / JavaScript</div><pre tabindex="0"><code>const first = { name: "Ada" };
+const second = { name: "Ada" };
+
+console.log(first === second);
+console.log(first.name === second.name);</code></pre></div><div class="code-panel"><div class="code-label"><span class="cs">C#</span></div><pre tabindex="0"><code>var first = new Person("Ada");
+var second = new Person("Ada");
+
+Console.WriteLine(first == second);
+Console.WriteLine(ReferenceEquals(first, second));
+
+record Person(string Name);</code></pre></div></div><div class="prompt"><span class="micro">Predict</span><p>Which comparisons are about identity, and which are about values? Predict all four Boolean results.</p></div><p class="task"><strong>Try a change →</strong> Replace the record with a plain class exposing the same name and constructor, without custom equality. Predict what <code>==</code> does.</p><details><summary>Give me a hint</summary><div class="reveal"><p>The compiler generates equality members for a record. <code>ReferenceEquals</code> continues to ask whether two references point to the same object.</p></div></details><details class="answer"><summary>Reveal the explanation</summary><div class="reveal"><p class="answer-label">JavaScript: false, true · C#: True, False</p><p>The C# record instances are different objects, but their string member values match. With a plain class and no custom equality, this example's <code>==</code> comparison becomes false.</p><p><code>record</code> alone means <code>record class</code>: it is still a reference type. Records do not provide automatic deep immutability or recursive content equality for arbitrary collections. Also, the rule for a plain class is a default, not a universal law: types such as <code>string</code> define their own value equality.</p></div></details><details class="further"><summary>Want to go deeper?</summary><div class="resource-body"><p class="resource-intro">Distinguish reference identity, value equality and immutability.</p><ul class="resource-list"><li><span class="resource-kind">Read / free</span><a href="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/records" target="_blank" rel="noopener noreferrer">records and equality ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Microsoft Learn — reference for the behavior explained above.</p></li><li><span class="resource-kind">Watch / free</span><a href="https://learn.microsoft.com/en-us/shows/on-dotnet/c-9-language-features" target="_blank" rel="noopener noreferrer">C# 9 Language Features — On .NET ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Start at 01:55 for records, 10:32 for equality and 13:18 for immutability. A C# 9-era introduction; use the current reference for later additions.</p></li></ul></div></details><div class="card-bottom"><label class="done-label"><input type="checkbox" data-done="11"> I can explain this</label><span class="project-link">Connect it: choosing data semantics</span></div></article>
+<article class="exercise" id="exercise-12"><div class="card-top"><span class="card-id">12 / INJECTION &amp; LIFETIMES</span><span class="duration">12–15 min · Session 3</span></div><h3>Who owns the shared state?</h3><p class="card-description">Receiving a dependency and choosing how long it lives are related, but separate, decisions.</p><div class="pair"><div class="code-panel"><div class="code-label">Node.js / JavaScript</div><pre tabindex="0"><code>function createCounter() {
+  let value = 0;
+  return { next: () =&gt; ++value };
+}
+
+function createPanel(counter) {
+  return { show: () =&gt; console.log(counter.next()) };
+}
+
+const shared = createCounter();
+const first = createPanel(shared);
+const second = createPanel(shared);
+first.show();
+second.show();</code></pre></div><div class="code-panel"><div class="code-label"><span class="cs">C# / Microsoft DI</span></div><pre tabindex="0"><code>using Microsoft.Extensions.DependencyInjection;
+
+var services = new ServiceCollection();
+services.AddSingleton&lt;Counter&gt;();
+services.AddTransient&lt;Panel&gt;();
+using var provider = services.BuildServiceProvider();
+
+var first = provider.GetRequiredService&lt;Panel&gt;();
+var second = provider.GetRequiredService&lt;Panel&gt;();
+first.Show();
+second.Show();
+
+public class Counter
+{
+    private int _value;
+    public int Next() =&gt; ++_value;
+}
+
+public class Panel
+{
+    private readonly Counter _counter;
+    public Panel(Counter counter) =&gt; _counter = counter;
+    public void Show() =&gt; Console.WriteLine(_counter.Next());
+}</code></pre></div></div><div class="prompt"><span class="micro">Predict</span><p>What do both examples print? What changes if the C# counter registration becomes transient?</p></div><p class="task"><strong>Try a change →</strong> Give each JavaScript panel a newly created counter. Make the equivalent C# lifetime change. Explain why both outputs change.</p><details><summary>Give me a hint</summary><div class="reveal"><p>The two panels are separate objects in both examples. Trace whether their counter dependencies point to one instance or two. The container constructs <code>Panel</code> by supplying its constructor parameter.</p></div></details><details class="answer"><summary>Reveal the explanation</summary><div class="reveal"><p class="answer-label">Both initially: 1, then 2 · Separate counters: 1, then 1</p><p>A singleton registration reuses its instance within this provider; it is not a universal, process-wide singleton. A transient counter is created each time it is resolved to construct a panel. A transient panel can still hold the same singleton counter as another panel.</p><p>The container is composition machinery. Constructor injection also works with ordinary <code>new</code> calls, and it does not require an interface for every class. Services should receive the collaborators they need rather than looking them up from a provider everywhere.</p><p>A console app has no automatic HTTP request scope. Shared mutable state can justify a lifetime decision here, but reassess it if the application later becomes concurrent. This tiny counter is not thread-safe; it is only a sequential demonstration.</p></div></details><details class="further"><summary>Want to go deeper?</summary><div class="resource-body"><p class="resource-intro">Trace construction and instance reuse as two separate responsibilities.</p><ul class="resource-list"><li><span class="resource-kind">Read / free</span><a href="https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection-basics" target="_blank" rel="noopener noreferrer">dependency injection basics ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Microsoft Learn — reference for the behavior explained above.</p></li><li><span class="resource-kind">Read / free</span><a href="https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection/service-lifetimes" target="_blank" rel="noopener noreferrer">service lifetimes ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Microsoft Learn — reference for the behavior explained above.</p></li><li><span class="resource-kind">Course / subscription</span><a href="https://www.pluralsight.com/courses/c-sharp-10-dependency-injection" target="_blank" rel="noopener noreferrer">C# Dependency Injection — Pluralsight ↗<span class="sr-only"> (opens in a new tab)</span></a><p>Optional deeper course. Focus on injection and instance lifetime; the Microsoft basics above are enough to start.</p></li></ul></div></details><div class="card-bottom"><label class="done-label"><input type="checkbox" data-done="12"> I can explain this</label><span class="project-link">Connect it: shared state across console features</span></div></article>
+</section>
+<section class="closing" aria-labelledby="next-step"><p class="eyebrow">Make the knowledge yours</p><h2 id="next-step">One idea. Your own example.</h2><p>Choose the comparison that surprised you most. Create a different tiny example, predict its behavior, then explain the result to another engineer without reading the answer.</p></section>
+</div></div>
+</main>
+<footer class="footer"><div class="wrap footer-grid"><div><p><strong>Node.js → C# · Sessions 1–3</strong></p><p>A standalone learning pack. Generic examples; independent of any learner's implementation.</p><p>Optional resources draw on the Sessions 1–3 curriculum, Microsoft Learn and additional topic-specific courses. Free and subscription resources are labeled; no videos are embedded.</p><p>To share: send this HTML file, then download and open it in a browser. For convenient phone access, host the same file and share its link.</p></div><span>Predict → change → explain.</span></div></footer>
+<div class="toast" id="status" role="status" aria-live="polite"></div>
+<script>
+(() => {
+  'use strict';
+  const key = 'stack-shift-node-csharp-v1';
+  const cards = [...document.querySelectorAll('.exercise')];
+  const progress = document.getElementById('progress');
+  const label = document.getElementById('progress-label');
+  const status = document.getElementById('status');
+  let state = { done: {}, notes: {} };
+  let toastTimer;
+  let noteTimer;
+  const announce = message => {
+    status.textContent = message;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { status.textContent = ''; }, 3200);
+  };
+  const unavailable = () => {
+    document.getElementById('storage-note').textContent = 'Browser storage is unavailable. Notes and progress last only until this page closes or reloads. Download your notes to keep them.';
+  };
+  try {
+    const loaded = JSON.parse(localStorage.getItem(key));
+    if (loaded && typeof loaded === 'object') {
+      if (loaded.done && typeof loaded.done === 'object') state.done = loaded.done;
+      if (loaded.notes && typeof loaded.notes === 'object') state.notes = loaded.notes;
+    }
+    localStorage.setItem(key, JSON.stringify(state));
+  } catch (_) { unavailable(); }
+  const save = () => { try { localStorage.setItem(key, JSON.stringify(state)); } catch (_) { unavailable(); } };
+  const refresh = () => {
+    let count = 0;
+    cards.forEach(card => {
+      const checkbox = card.querySelector('[data-done]');
+      const completed = state.done[checkbox.dataset.done] === true;
+      checkbox.checked = completed;
+      card.classList.toggle('is-done', completed);
+      if (completed) count++;
+    });
+    progress.value = count;
+    label.textContent = `${count} of ${cards.length} explored`;
+  };
+  cards.forEach(card => {
+    const checkbox = card.querySelector('[data-done]');
+    const id = checkbox.dataset.done;
+    const area = document.createElement('div');
+    area.className = 'notes-area';
+    const notesLabel = document.createElement('label');
+    notesLabel.className = 'notes-label';
+    notesLabel.htmlFor = `notes-${id}`;
+    notesLabel.textContent = 'My prediction / what changed';
+    const textarea = document.createElement('textarea');
+    textarea.id = `notes-${id}`;
+    textarea.placeholder = 'Write your reasoning before revealing the explanation…';
+    textarea.value = typeof state.notes[id] === 'string' ? state.notes[id] : '';
+    textarea.addEventListener('input', () => {
+      state.notes[id] = textarea.value;
+      clearTimeout(noteTimer);
+      noteTimer = setTimeout(save, 250);
+    });
+    area.append(notesLabel, textarea);
+    card.insertBefore(area, card.querySelector('details'));
+    checkbox.addEventListener('change', () => { state.done[id] = checkbox.checked; save(); refresh(); });
+    card.querySelectorAll('.code-panel').forEach(panel => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'copy';
+      button.textContent = 'Copy';
+      const language = panel.querySelector('.code-label').textContent.trim();
+      button.setAttribute('aria-label', `Copy ${language} code for exercise ${id}`);
+      button.addEventListener('click', async () => {
+        const code = panel.querySelector('code');
+        try {
+          if (!navigator.clipboard || !navigator.clipboard.writeText) throw new Error('Clipboard unavailable');
+          await navigator.clipboard.writeText(code.textContent);
+          announce('Code copied.');
+        } catch (_) {
+          const range = document.createRange();
+          range.selectNodeContents(code);
+          const selection = window.getSelection();
+          if (selection) { selection.removeAllRanges(); selection.addRange(range); }
+          announce('Code selected. Use your browser’s Copy command.');
+        }
+      });
+      panel.querySelector('.code-label').append(button);
+    });
+  });
+  refresh();
+  window.addEventListener('pagehide', save);
+  document.getElementById('reset').addEventListener('click', () => {
+    if (!window.confirm('Reset all completion checkboxes? Your written notes will be kept.')) return;
+    state.done = {};
+    save(); refresh(); announce('Progress reset. Your notes are still here.');
+  });
+  document.getElementById('export').addEventListener('click', () => {
+    save();
+    const lines = ['Node.js → C# · My exercise notes', 'Sessions 1–3', ''];
+    cards.forEach(card => {
+      const id = card.querySelector('[data-done]').dataset.done;
+      lines.push(`${id}. ${card.querySelector('h3').textContent}`, `Status: ${state.done[id] === true ? 'Explored' : 'To explore'}`, state.notes[id] || '(No notes yet)', '');
+    });
+    const blob = new Blob(['\ufeff', lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url; link.download = 'nodejs-to-csharp-my-notes.txt';
+    document.body.append(link); link.click(); link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+    announce('Notes download started.');
+  });
+  let printState = null;
+  const preparePrint = () => {
+    if (printState) return;
+    printState = [...document.querySelectorAll('.exercise details')].map(detail => [detail, detail.open]);
+    printState.forEach(([detail]) => { detail.open = true; });
+  };
+  const restorePrint = () => {
+    if (!printState) return;
+    printState.forEach(([detail, open]) => { detail.open = open; });
+    printState = null;
+  };
+  window.addEventListener('beforeprint', preparePrint);
+  window.addEventListener('afterprint', restorePrint);
+  document.getElementById('print').addEventListener('click', () => { preparePrint(); window.print(); });
+})();
+</script>
+</body>
+</html>

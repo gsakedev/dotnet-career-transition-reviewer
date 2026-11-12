@@ -1,0 +1,48 @@
+{
+  "microsoft_learn_registrations": [
+    {
+      "name": "microsoft-learn",
+      "enabled": true,
+      "url": "https://learn.microsoft.com/api/mcp"
+    }
+  ],
+  "configuration_file": "C:\\Users\\gsake\\.codex\\config.toml",
+  "registration_method": "codex mcp add microsoft-learn --url https://learn.microsoft.com/api/mcp",
+  "configuration_preservation": "CLI registration changed the existing node_repl table as well. Exact pre-change TOML was not retained; full source-setting preservation cannot be certified. Effective node_repl command, env variable names, enabled state and timeout match the pre-registration list observed in this conversation. No deliberate unrelated edits were made.",
+  "node_repl_effective": {
+    "enabled": true,
+    "command": "C:\\Users\\gsake\\AppData\\Local\\OpenAI\\Codex\\runtimes\\cua_node\\b2c4f0c90eadfac4\\bin\\node_repl.exe",
+    "env_keys": [
+      "BROWSER_USE_AVAILABLE_BACKENDS",
+      "BROWSER_USE_CODEX_APP_BUILD_FLAVOR",
+      "BROWSER_USE_CODEX_APP_VERSION",
+      "BROWSER_USE_TINYSKY_ENABLED",
+      "CODEX_CLI_PATH",
+      "CODEX_HOME",
+      "NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER",
+      "NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME",
+      "NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS",
+      "NODE_REPL_NODE_MODULE_DIRS",
+      "NODE_REPL_NODE_PATH",
+      "NODE_REPL_TRUSTED_CODE_PATHS",
+      "NODE_REPL_TRUSTED_SERVICES",
+      "NODE_REPL_UNTRUSTED_ENV_ALLOWLIST",
+      "SKY_CUA_NATIVE_PIPE",
+      "SKY_CUA_NATIVE_PIPE_DIRECTORY"
+    ],
+    "env_vars": [
+      "BROWSER_USE_ACCESS_EXECUTOR_ID",
+      "BROWSER_USE_ACCESS_PIPE_PATH",
+      "BROWSER_USE_ACCESS_VERIFYING_IDENTITY",
+      "CODEX_WINDOWS_REGISTERED_CORE"
+    ],
+    "startup_timeout_sec": 120.0
+  },
+  "actual_retrieval": {
+    "fresh_codex_session": "search and fetch succeeded; turn.completed recorded",
+    "setup_chat": "direct MCP search and fetch succeeded; isError=false",
+    "search_query": "EF Core 10 DbContext concurrent asynchronous operations SaveChangesAsync",
+    "retrieved_url": "https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-10.0",
+    "setup_chat_fetched_markdown_characters": 11510
+  }
+}

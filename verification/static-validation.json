@@ -1,0 +1,19 @@
+{
+  "skill_metadata_and_links": "passed",
+  "skills": [
+    "dotnet-assignment-compliance",
+    "dotnet-career-transition-reviewer",
+    "dotnet-correctness",
+    "dotnet-design-assurance"
+  ],
+  "session_instruction_files": 8,
+  "assignment_files": 11,
+  "all_template_markdown_readable": true,
+  "template_tracked_files_unchanged": true,
+  "template_git_status_unchanged": true,
+  "template_status": "?? docs/session6.7z",
+  "reviewer_outside_template": true,
+  "registered_mentees": 0,
+  "mentor_report_files": 0,
+  "mentee_report_files": 0
+}

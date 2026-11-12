@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "reviewer_version": "1.0.0",
+  "reviewer_name": "dotnet-career-transition-reviewer",
+  "reviewer_workspace": "C:\\Users\\gsake\\source\\review-workspaces\\dotnet-career-transition-reviewer",
+  "training_template": {
+    "repository": "C:\\Users\\gsake\\source\\repos\\dotnet-external-coaching-template",
+    "discovery_commit": "fbe08912a9502cb03088882cf553d93cc439e582",
+    "version_policy": "Resolve and record actual template SHA per review; disclose drift from discovery; never modify template."
+  },
+  "mentees": [
+  ],
+  "selection": {
+    "require_explicit_repository_each_review": true,
+    "allow_implicit_last_target": false,
+    "selected_mentee": null,
+    "selected_session": null,
+    "uncommitted_default": "exclude"
+  },
+  "output": {
+    "default_mode": "mentor",
+    "mentee_output_requires_explicit_request": true,
+    "mentor_root": "reviews/mentor-only",
+    "mentee_root": "reviews/mentee",
+    "normal_finding_limit": 5,
+    "retain_all_significant_findings_privately": true,
+    "save_requires_explicit_request": true
+  },
+  "documentation": {
+    "server_name": "microsoft-learn",
+    "endpoint": "https://learn.microsoft.com/api/mcp",
+    "require_actual_retrieval": true,
+    "allow_automatic_install_or_configuration_during_review": false
+  }
+}
