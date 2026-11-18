@@ -48,6 +48,14 @@ The central skill selects the three local technical specialists, validates candi
 
 The learning report uses the same explicit target snapshot and selected audience (mentor by default; learner output only when requested). Recheck review evidence against relevant code and session objectives. Share existing finding IDs, the five-finding/overflow policy, at most two learner discussion questions and one aligned immediate next action across the main and learning reports. Saving remains opt-in and uses the same validated per-audience review directory. Skills are not agents. No automatic subagents; delegate only with clear benefit and authorization.
 
+## Optional GitHub review comments
+
+After delivering the requested normal review outputs, including coaching when enabled, offer once in mentor-facing chat to prepare learner-safe comments for a pending GitHub PR review. Skip the offer for setup-only work, an explicit PR-comment opt-out, or learner-only feedback; do not insert it into learner reports. A direct request for PR comments already supplies opt-in.
+
+Only after acceptance, read .agents/skills/dotnet-pr-review-comments/SKILL.md. Prepare the exact summary/comments and verify the selected PR, account and reviewed snapshot before asking approval to upload. Accepting the initial offer authorizes drafting and read-only PR inspection, not an unseen GitHub write.
+
+This is a narrow exception for explicitly approved learner-safe PR review feedback, not permission to modify learner/template files or upload mentor-only material. Create only the approved pending review, verify its state and contents, and stop. Publication requires a separate explicit request and current payload/snapshot verification. Do not duplicate, replace or submit an unrelated existing draft. Tool limitations never justify posting a submitted review instead.
+
 ## VS Code invocation
 
 Open this reviewer folder as working directory, start a fresh Codex chat, verify `/skills`, and invoke `$dotnet-career-transition-reviewer` with explicit repository, session/part, target and audience. Return reports in chat unless saving is requested and permitted. Setup alone never authorizes a pilot review.

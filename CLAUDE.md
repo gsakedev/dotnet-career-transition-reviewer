@@ -5,6 +5,7 @@
 The imported `AGENTS.md` is the reviewer contract. Keep review policy in that file, `review-rubric.md`, `targets.json` and the canonical `.agents/skills/` packages. This adapter only supplies Claude Code entrypoints.
 
 - Start Claude Code in this reviewer repository. For a review request, read and follow `.agents/skills/dotnet-career-transition-reviewer/SKILL.md`, whether the user invokes `/dotnet-career-transition-reviewer` or requests a review in ordinary language.
+- For comments on a completed review, use `/dotnet-pr-review-comments` or read `.agents/skills/dotnet-pr-review-comments/SKILL.md` directly after the mentor opts in. The central reviewer offers this optional step; only approved learner-safe feedback may be added as a pending GitHub review, and publication requires a separate request.
 - Map the canonical Codex startup instructions to this host: `CLAUDE.md` imports the contract, and `.claude/skills/dotnet-career-transition-reviewer/SKILL.md` exposes the slash command. Use `/dotnet-career-transition-reviewer` in Claude Code in place of Codex's `$dotnet-career-transition-reviewer`.
 - Read canonical specialist skills and templates from their original `.agents/skills/` locations. Resolve each file's relative references against that file's directory. Do not copy the policies into Claude-specific files or assume every specialist is a Claude slash command.
 - Follow the central skill's automatic learning-coach step and its audience, evidence, scope and saving rules. Loading this adapter or checking setup does not authorize a mentee review.

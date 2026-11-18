@@ -11,6 +11,7 @@ The reviewer checks the engineer's implementation against the selected assignmen
 3. Inspect the implementation and its callers using the three technical specialist skills.
 4. Consolidate findings, strengths, assignment coverage and verification limits into the main assessment.
 5. Automatically run the learning coach against the same evidence and code snapshot to produce a separate learning report.
+6. In mentor-facing chat, offer to prepare PR comments. This optional step shows the exact feedback for approval before creating a pending GitHub review; it never publishes automatically.
 
 The skills are reusable instructions followed by the coding assistant. They do not automatically launch separate agents, schedule background reviews or run learner applications.
 
@@ -23,6 +24,7 @@ Both tools use the same review contract, canonical skills and report templates. 
 | [dotnet-correctness](.agents/skills/dotnet-correctness/SKILL.md) | Checks applicable C#/.NET behavior, including LINQ, nullability, async, data access and resource handling. |
 | [dotnet-design-assurance](.agents/skills/dotnet-design-assurance/SKILL.md) | Assesses design, boundaries, DI, security, reliability and testing at the appropriate curriculum stage. |
 | [dotnet-learning-coach](.agents/skills/dotnet-learning-coach/SKILL.md) | Identifies demonstrated strengths, areas to strengthen and personalized next learning priorities. Runs automatically after normal reviews unless explicitly excluded. |
+| [dotnet-pr-review-comments](.agents/skills/dotnet-pr-review-comments/SKILL.md) | After mentor opt-in, prepares learner-safe PR comments and creates a pending GitHub review only after approval of the exact payload. Publication is separate. |
 
 ## Reports
 
@@ -47,7 +49,8 @@ dotnet-career-transition-reviewer/
 ├── review-rubric.md
 ├── targets.json
 ├── .claude/skills/
-│   └── dotnet-career-transition-reviewer/SKILL.md
+│   ├── dotnet-career-transition-reviewer/SKILL.md
+│   └── dotnet-pr-review-comments/SKILL.md
 ├── .agents/skills/
 │   ├── dotnet-career-transition-reviewer/
 │   │   ├── SKILL.md
@@ -55,9 +58,12 @@ dotnet-career-transition-reviewer/
 │   ├── dotnet-assignment-compliance/
 │   ├── dotnet-correctness/
 │   ├── dotnet-design-assurance/
-│   └── dotnet-learning-coach/
+│   ├── dotnet-learning-coach/
+│   │   ├── SKILL.md
+│   │   └── references/learning-focus-template.md
+│   └── dotnet-pr-review-comments/
 │       ├── SKILL.md
-│       └── references/learning-focus-template.md
+│       └── references/pending-review-api.md
 ├── reviews/
 │   ├── mentor-only/
 │   └── mentee/
@@ -124,7 +130,7 @@ Get-Content -LiteralPath .\targets.json -Raw | ConvertFrom-Json | Out-Null
 
 #### Codex
 
-Use this repository as the working folder and start a fresh chat. In the CLI or IDE extension, use `/skills` or type `$` to confirm the five skills are available. Codex discovers repository skills under `.agents/skills`. See the official [skills documentation](https://learn.chatgpt.com/docs/build-skills) and [AGENTS.md instructions](https://learn.chatgpt.com/docs/agent-configuration/agents-md).
+Use this repository as the working folder and start a fresh chat. In the CLI or IDE extension, use `/skills` or type `$` to confirm the six skills are available. Codex discovers repository skills under `.agents/skills`. See the official [skills documentation](https://learn.chatgpt.com/docs/build-skills) and [AGENTS.md instructions](https://learn.chatgpt.com/docs/agent-configuration/agents-md).
 
 For a CLI session that returns the review in chat:
 
@@ -143,7 +149,7 @@ claude --permission-mode plan
 
 Plan mode is intended for analysis without editing project files. Ask for the review reports in chat, not an implementation plan. See Claude Code's [permission modes](https://code.claude.com/docs/en/permissions).
 
-The root `CLAUDE.md` uses `@AGENTS.md` to load the shared contract. Claude discovers one native entrypoint under `.claude/skills/`; invoke `/dotnet-career-transition-reviewer` and supply the review details below. That entrypoint reads the canonical central skill, which loads the applicable specialists and automatically includes the learning coach. There is no need to copy the five canonical skills or invoke the coach separately. See the official [instruction imports](https://code.claude.com/docs/en/memory) and [Claude Code skills](https://code.claude.com/docs/en/skills) documentation.
+The root `CLAUDE.md` uses `@AGENTS.md` to load the shared contract. Claude discovers two native entrypoints under `.claude/skills/`: `/dotnet-career-transition-reviewer` for reviews and `/dotnet-pr-review-comments` for the optional PR-comment workflow. The reviewer reads the canonical central skill, which loads the applicable specialists and automatically includes the learning coach. There is no need to copy the six canonical skills or invoke the coach separately. See the official [instruction imports](https://code.claude.com/docs/en/memory) and [Claude Code skills](https://code.claude.com/docs/en/skills) documentation.
 
 Keep learner and template repositories read-only in either tool. Instruction files describe behavior; they do not enforce operating-system permissions. Grant only the access needed for inspection. If you explicitly request saved reports, use a session that permits writing to the appropriate reviewer report directory. Opening a sibling mentee folder does not load this reviewer's instructions automatically.
 
@@ -246,6 +252,33 @@ Keep the explicit repository, session, target and audience fields, then adjust t
 
 The learning coach keeps the same inspected scope. Without a comparison baseline, it reports current evidence and marks progress comparison as not assessed.
 
+### Optional pending GitHub review
+
+After a normal mentor review, the reviewer asks whether you want PR comments. Declining or not answering leaves GitHub untouched. Setup checks and learner-only feedback do not trigger the offer.
+
+1. Accept the offer, or invoke `$dotnet-pr-review-comments` in Codex / `/dotnet-pr-review-comments` in Claude Code.
+2. Identify the source review and intended PR. The skill checks the reviewed commit against the PR head and drafts selected learner-safe comments.
+3. Inspect the exact summary, comment text and code locations. Approve that concrete payload before anything is added to GitHub.
+4. The skill creates one **pending** review, verifies its contents and returns its link. You can inspect it on GitHub.
+5. Submit it manually, or explicitly ask the assistant to publish that review. It rechecks the draft and PR snapshot before submission.
+
+For example, after a completed review:
+
+~~~text
+$dotnet-pr-review-comments
+Prepare comments from this completed review for https://github.com/OWNER/REPO/pull/123.
+Keep the same assignment scope. Show me the exact text before creating a pending review.
+Do not publish it.
+~~~
+
+Replace the PR URL; Claude Code uses the slash command instead of `$`. You can also request this follow-up in ordinary language. A request to prepare comments authorizes drafting, not uploading unseen text. An already approved unchanged payload does not need repeated confirmation.
+
+PR comments are separately written for the learner; the private assessment is never uploaded. The normal finding cap and scope still apply. Existing unrelated drafts are preserved, and changed PR snapshots require revalidation and renewed approval. Pending feedback is an optional follow-up, not a third automatic report.
+
+Use an authenticated GitHub connector/MCP tool that supports pending reviews, or an already configured GitHub CLI/REST client. Some connectors only submit reviews immediately; the skill must not use those for pending creation. If no suitable connection exists, it keeps the preview in chat and explains the missing prerequisite. No extra MCP server or hook is installed. Microsoft Learn remains the documentation source.
+
+The GitHub API distinguishes [creating a pending review from submitting it](https://docs.github.com/en/rest/pulls/reviews). Posting also needs host permission for network writes; analysis/plan mode does not grant that permission automatically. Saving local drafts/status files remains opt-in.
+
 ## Curriculum boundaries
 
 The authoritative assignment and session instructions govern each review. The rubric provides navigation and interpretation guidance:
@@ -278,7 +311,8 @@ The `verification/` directory contains historical setup evidence. It does not es
 ## Troubleshooting
 
 - **Codex skills are missing:** confirm the reviewer working folder and the `.agents/skills` files, then restart the session if needed.
-- **Claude's reviewer command is missing:** confirm `.claude/skills/dotnet-career-transition-reviewer/SKILL.md` exists in the reviewer checkout and start a fresh session there. Only the central reviewer has a Claude slash command; the other canonical skills load through its workflow.
+- **Claude's reviewer command is missing:** confirm the requested wrapper exists under `.claude/skills/` and start a fresh session in the reviewer checkout. The central reviewer and PR-comments skill have Claude slash commands; the other canonical skills load through the review workflow.
+- **PR comments were not added:** accepting the offer only starts drafting. Creating a pending review requires approval of the displayed payload, a matching PR snapshot and an authenticated tool that supports pending reviews. Nothing is published automatically.
 - **Claude cannot find a template or specialist:** keep `.agents/skills/` alongside the adapter; copying only `.claude/` is insufficient. Resolve canonical relative references from the original `.agents/skills/` directory.
 - **Microsoft Learn is unavailable:** inspect the active host's MCP configuration and project approval status, then verify a generic search and page retrieval. A review must disclose unavailable MCP and any official-web fallback.
 - **The target is ambiguous:** provide the repository path, session/part, branch and target SHA or HEAD explicitly. A registry entry does not authorize implicit selection.

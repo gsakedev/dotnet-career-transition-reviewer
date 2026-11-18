@@ -41,3 +41,11 @@ Only when requested, use [mentee-report-template.md](references/mentee-report-te
 Apply AGENTS.md's normal five-finding cap and private overflow exception. Disclose total, omitted and critical-omitted counts; critical overflow means incomplete feedback requiring mentor triage. Do not hide additional technical findings in coverage comments. End learner guidance with one concrete next step and at most two meaningful questions.
 
 Return in chat unless saving is requested and permitted. Validate output containment/path segments; use a unique date/short-SHA/suffix review ID; never overwrite, publish or copy reports to a mentee repository. The central reviewer owns consolidation and verification limitations.
+
+## Offer optional PR comments
+
+After delivering the requested normal review outputs, including coaching when enabled, offer once in mentor-facing chat: "Would you like me to prepare comments for a pending GitHub PR review? I will show you the exact text before adding anything to GitHub." This is an optional follow-up, not a third automatic report. Do not add the offer to learner reports, setup-only responses, learner-only feedback or a review where the user opted out of PR comments.
+
+If accepted, read [dotnet-pr-review-comments](../dotnet-pr-review-comments/SKILL.md) and pass the explicit review manifest, validated findings/IDs, coverage limits, scope exclusions and learning report if produced. The skill asks only for missing PR details, drafts learner-safe text, obtains approval of the concrete payload, then creates and verifies a pending review. Do not upload private reports or assume a PR from the branch. When the user directly requests PR comments, invoke that skill without repeating the initial offer.
+
+A decline or no answer means no PR operation. Pending creation requires its own payload approval; publication requires a separate explicit request. Existing approval of an unchanged concrete payload remains valid after the skill's rechecks. The coordinating reviewer owns approval enforcement even if a child helps prepare wording.
